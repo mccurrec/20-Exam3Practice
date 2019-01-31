@@ -6,8 +6,8 @@ This problem provides practice at:
 
 Authors: David Mutchler, Vibha Alangar, Matt Boutell, Dave Fisher,
          Mark Hays, Amanda Stouder, Aaron Wilkin, their colleagues,
-         and PUT_YOUR_NAME_HERE.
-"""  # TODO: 1. PUT YOUR NAME IN THE ABOVE LINE.
+         and Ezrie McCurry.
+"""  # DONE: 1. PUT YOUR NAME IN THE ABOVE LINE.
 
 ###############################################################################
 # Students:
@@ -34,7 +34,7 @@ import rosegraphics as rg
 
 def main():
     """ Calls the   TEST   functions in this module. """
-    run_test_hourglass()
+    # run_test_hourglass()
     run_test_many_hourglasses()
 
 
@@ -64,6 +64,39 @@ def run_test_hourglass():
     window2.close_on_mouse_click()
 
 
+def line_thru_circle(circle):
+    start = rg.Point(circle.center.x - circle.radius, circle.center.y)
+    end = rg.Point(circle.center.x + circle.radius, circle.center.y)
+    return rg.Line(start, end)
+
+
+def half_of_hourglass(window, n, point, radius, color, half):
+    center = point
+    if half == 'bottom':
+        center.x = center.x - radius
+        center.y = center.y + radius * 3 ** 0.5
+        starting_range = 1
+        delta_y = radius * 3 ** 0.5
+    if half == 'top':
+        starting_range = 0
+        delta_y = - radius * 3 ** 0.5
+    for j in range(starting_range, n):
+        for k in range(j + 1):
+            circle = rg.Circle(point, radius)
+            circle.fill_color = color
+            line = line_thru_circle(circle)
+            circle.attach_to(window)
+            line.attach_to(window)
+            center.x = center.x + radius * 2
+        center.x = center.x - radius * (2 * j + 1) - radius * 2
+        center.y = center.y + delta_y
+    window.render()
+    if half == 'top':
+        return rg.Point(center.x, center.y - delta_y - radius)
+    else:
+        return rg.Point(center.x + 2 * n * radius, center.y - delta_y + radius)
+
+
 def hourglass(window, n, point, radius, color):
     """
     See   hourglass_picture.pdf   in this project for pictures that may
@@ -90,7 +123,7 @@ def hourglass(window, n, point, radius, color):
     a color that rosegraphics understands.
     """
     # -------------------------------------------------------------------------
-    # TODO: 2. Implement and test this function.
+    # DONE: 2. Implement and test this function.
     #       We provided some tests for you (above).
     # -------------------------------------------------------------------------
     ###########################################################################
@@ -102,6 +135,10 @@ def hourglass(window, n, point, radius, color):
     #    DIFFICULTY:      8
     #    TIME ESTIMATE:  25 minutes (warning: this problem is challenging)
     # -------------------------------------------------------------------------
+    starting_center = point.clone()
+    point1 = half_of_hourglass(window, n, starting_center, radius, color, 'top')
+    point2 = half_of_hourglass(window, n, point, radius, color, 'bottom')
+    return [point1, point2]
 
 
 def run_test_many_hourglasses():
@@ -164,7 +201,7 @@ def many_hourglasses(window, square, m, colors):
     each of which denotes a color that rosegraphics understands.
     """
     # -------------------------------------------------------------------------
-    # TODO: 3. Implement and test this function.
+    # DONE: 3. Implement and test this function.
     #       We provided some tests for you (above).
     # -------------------------------------------------------------------------
     ###########################################################################
@@ -180,6 +217,21 @@ def many_hourglasses(window, square, m, colors):
     #                         a correct "hourglass" function above)
     #    TIME ESTIMATE:  20 minutes (warning: this problem is challenging)
     # -------------------------------------------------------------------------
+    # for k in range(m):
+    #     point = square.center.clone()
+    #     color = colors[k]
+    #     corners = hourglass(window, k + 1, point, square.length_of_each_side / 2, color)
+    #     point.x = point.x + 2 * square.length_of_each_side * (2 * k + 3) / 2
+    x = square.center.x
+    for k in range(m):
+        pointt = square.center.clone()
+        pointt.x = x
+        color = colors[k % len(colors)]
+        corners = hourglass(window, k + 1, pointt, square.length_of_each_side / 2, color)
+        rect = rg.Rectangle(corners[0], corners[1])
+        rect.attach_to(window)
+        window.render()
+        x = x + square.length_of_each_side * (2 * k + 3) / 2
 
 
 # -----------------------------------------------------------------------------
