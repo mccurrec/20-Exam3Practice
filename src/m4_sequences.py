@@ -6,8 +6,8 @@ This problem provides practice at:
 
 Authors: David Mutchler, Vibha Alangar, Matt Boutell, Dave Fisher,
          Mark Hays, Amanda Stouder, Aaron Wilkin, their colleagues,
-         and PUT_YOUR_NAME_HERE.
-"""  # TODO: 1. PUT YOUR NAME IN THE ABOVE LINE.
+         and Ezrie McCurry.
+"""  # DONE: 1. PUT YOUR NAME IN THE ABOVE LINE.
 
 ###############################################################################
 # Students:
@@ -142,7 +142,11 @@ def practice_problem4a(sequence):
     #    DIFFICULTY:      7
     #    TIME ESTIMATE:   15 minutes.
     ###########################################################################
-
+    returning = []
+    for k in range(len(sequence) - 1):
+        if sequence[k] == sequence[k + 1]:
+            returning = returning + [k]
+    return returning
 
 def run_test_practice_problem4b():
     """ Tests the    practice_problem4b    function. """
@@ -198,13 +202,18 @@ def practice_problem4b(sequence):
       :type sequence: (list | tuple) of (float | int)
     """
     # -------------------------------------------------------------------------
-    # TODO: 3. Implement and test this function.
+    # DONE: 3. Implement and test this function.
     #     The testing code is already written for you (above).
     ###########################################################################
     # DIFFICULTY AND TIME RATINGS (see top of this file for explanation)
     #    DIFFICULTY:      5
     #    TIME ESTIMATE:   10 minutes.
     ###########################################################################
+    maximum = sequence[0]
+    for k in range(2, len(sequence), 2):
+        if sequence[k] > maximum:
+            maximum = sequence[k]
+    return maximum
 
 
 def run_test_practice_problem4c():
@@ -296,7 +305,7 @@ def practice_problem4c(points):
       :rtype: rg.Point | string
     """
     ###########################################################################
-    # TODO: 4. Implement and test this function.
+    # DONE: 4. Implement and test this function.
     #     The testing code is already written for you (above).
     #
     # IMPORTANT: This problem is your LOWEST PRIORITY for preparing
@@ -307,6 +316,16 @@ def practice_problem4c(points):
     #    DIFFICULTY:      9
     #    TIME ESTIMATE:   15 minutes.
     ###########################################################################
+    k = 0
+    while True:
+        if is_prime(points[k].x) is True and is_prime(points[k].y):
+            x = points[k].x
+            points[k].x = points[k].y
+            points[k].y = x
+            return points[k]
+        k = k + 1
+        if k == len(points):
+            return 'Not found'
 
 
 def run_test_practice_problem4d():
@@ -392,13 +411,18 @@ def practice_problem4d(sequence):
       :rtype: int
     """
     ###########################################################################
-    # TODO: 5. Implement and test this function.
+    # DONE: 5. Implement and test this function.
     #     The testing code is already written for you (above).
     ###########################################################################
     # DIFFICULTY AND TIME RATINGS (see top of this file for explanation)
     #    DIFFICULTY:      7
     #    TIME ESTIMATE:   15 minutes.
     ###########################################################################
+    total = 0
+    for k in range(len(sequence) - 1):
+        if is_prime(sequence[k]) is True and is_prime(sequence[k + 1]) is True and sequence[k] != sequence[k + 1]:
+            total = total + sequence[k]
+    return total
 
 
 # -----------------------------------------------------------------------------
